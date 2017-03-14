@@ -1,6 +1,6 @@
-/* ################################
- * #####    The MIT-License    ####
- * ################################
+/* #######################################################
+ * #####    Source Code Analyzer - The MIT-License    ####
+ * #######################################################
  *
  * Copyright (C) 2017, Martin Armbruster
  *
@@ -34,6 +34,7 @@ import marm.src.ana.SrcFileHandler;
  * 
  * @author Martin Armbruster
  * @version 1.0
+ * @since 1.0
  */
 public class SrcCounterJava implements SrcFileHandler
 {
