@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>marm</groupId>
   <artifactId>tools-src-ana</artifactId>
-  <version>0.0</version>
+  <version>1.0</version>
   <dependencies>
   	<dependency>
   		<groupId>org.ahocorasick</groupId>
