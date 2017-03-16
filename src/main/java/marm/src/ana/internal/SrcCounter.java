@@ -84,13 +84,11 @@ public abstract class SrcCounter implements SrcFileHandler
 	 * 
 	 * @return the extension to identify the source code files.
 	 */
-	@Override
 	public abstract String getExtension();
 	
 	/**
 	 * Resets this instance for analyzing another directory.
 	 */
-	@Override
 	public void reset()
 	{
 		scannedFiles = 0;
@@ -103,7 +101,6 @@ public abstract class SrcCounter implements SrcFileHandler
 	 * 
 	 * @param f the file.
 	 */
-	@Override
 	public void handleFile(File f)
 	{
 		scannedFiles++;

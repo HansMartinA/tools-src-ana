@@ -67,7 +67,6 @@ public class ReplaceJava2 implements SrcFileHandler
 	 * 
 	 * @return the extension for identifying java source code files.
 	 */
-	@Override
 	public String getExtension()
 	{
 		return "java";
@@ -76,7 +75,6 @@ public class ReplaceJava2 implements SrcFileHandler
 	/**
 	 * Resets the instance for another directory analysis. This does nothing here.
 	 */
-	@Override
 	public void reset()
 	{
 	}
@@ -86,7 +84,6 @@ public class ReplaceJava2 implements SrcFileHandler
 	 * 
 	 * @param f the java source code file in which all replaces happens.
 	 */
-	@Override
 	public void handleFile(File f)
 	{
 		try
