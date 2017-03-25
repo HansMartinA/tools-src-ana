@@ -27,11 +27,15 @@ import java.util.ArrayList;
  * Searches for source code files in a given directory and analyzes them with special handlers.
  * 
  * @author Martin Armbruster
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public class SourceAnalyzer
 {
+	/**
+	 * Saves all regular expressions to identify directories and files for ignoring.
+	 */
+	private ArrayList<String> ignoredFiles;
 	/**
 	 * Saves all added handlers.
 	 */
@@ -46,6 +50,7 @@ public class SourceAnalyzer
 	 */
 	public SourceAnalyzer()
 	{
+		ignoredFiles = new ArrayList<String>();
 		handlers = new ArrayList<SrcFileHandler>();
 		reset();
 	}
@@ -58,6 +63,17 @@ public class SourceAnalyzer
 	public void addSrcFileHandler(SrcFileHandler toAdd)
 	{
 		handlers.add(toAdd);
+	}
+	
+	/**
+	 * Adds an regular expression for ignoring directories or files.
+	 * All found directories and files are compared to all registered expressions following ".*"+regex.
+	 * 
+	 * @param regex 
+	 */
+	public void addIgnoreFile(String regex)
+	{
+		ignoredFiles.add(regex);
 	}
 	
 	/**
@@ -90,8 +106,15 @@ public class SourceAnalyzer
 		{
 			return;
 		}
-		for(int i=0; i<files.length; i++)
+		loop: for(int i=0; i<files.length; i++)
 		{
+			for(int j=0; j<ignoredFiles.size(); j++)
+			{
+				if(files[i].getAbsolutePath().matches(".*"+ignoredFiles.get(j)))
+				{
+					continue loop;
+				}
+			}
 			if(files[i].isFile())
 			{
 				handleFile(files[i]);
