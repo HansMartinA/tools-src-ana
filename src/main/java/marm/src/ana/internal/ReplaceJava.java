@@ -20,14 +20,7 @@
 
 package marm.src.ana.internal;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Map;
-import marm.src.ana.SrcFileHandler;
 
 /**
  * Replaces strings following regular expressions in a java source code file with other strings.
@@ -37,13 +30,8 @@ import marm.src.ana.SrcFileHandler;
  * @version 1.0
  * @since 1.0
  */
-public class ReplaceJava implements SrcFileHandler
+public class ReplaceJava extends Replace
 {
-	/**
-	 * Stores the mapping between the strings to be replaced and the strings to be inserted.
-	 */
-	private Map<String, String> replaceStrings;
-	
 	/**
 	 * Creates a new instance.
 	 * 
@@ -51,7 +39,7 @@ public class ReplaceJava implements SrcFileHandler
 	 */
 	public ReplaceJava(Map<String, String> regexReplaceMapping)
 	{
-		replaceStrings = regexReplaceMapping;
+		super(regexReplaceMapping);
 	}
 	
 	/**
@@ -59,6 +47,7 @@ public class ReplaceJava implements SrcFileHandler
 	 * 
 	 * @return the extension for identifying java source code files.
 	 */
+	@Override
 	public String getExtension()
 	{
 		return "java";
@@ -67,43 +56,8 @@ public class ReplaceJava implements SrcFileHandler
 	/**
 	 * Resets the instance for another directory analysis. This does nothing here.
 	 */
+	@Override
 	public void reset()
 	{
-	}
-
-	/**
-	 * Handles a java source code file.
-	 * 
-	 * @param f the java source code file in which all replaces happens.
-	 */
-	public void handleFile(File f)
-	{
-		try
-		{
-			// Reads the whole file.
-			BufferedReader reader = new BufferedReader(new FileReader(f));
-			StringBuilder builder = new StringBuilder();
-			String line = reader.readLine();
-			while(line!=null)
-			{ 
-				builder.append(line);
-				builder.append("\n");
-				line = reader.readLine();
-			}
-			reader.close();
-			// Replaces all strings.
-			String endResult = builder.toString();
-			for(Map.Entry<String, String> ent : replaceStrings.entrySet())
-			{
-				endResult = endResult.replaceAll(ent.getKey(), ent.getValue());
-			}
-			BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-			writer.write(endResult);
-			writer.close();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
 	}
 }

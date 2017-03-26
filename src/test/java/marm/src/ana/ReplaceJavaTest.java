@@ -143,7 +143,7 @@ public class ReplaceJavaTest
 	public void testReplaceWithLoremIpsum()
 	{
 		HashMap<String, String> replacements = new HashMap<>();
-		replacements.put("dolor", "Something else\\.");
+		replacements.put("dolor", "Something else.");
 		replacements.put("Lorem ipsum", "Blablub");
 		replacements.put("sit", "Lorem ipsum");
 		replacements.put("no", "Test 5149");

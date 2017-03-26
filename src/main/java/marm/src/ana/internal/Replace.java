@@ -21,107 +21,73 @@
 package marm.src.ana.internal;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 import marm.src.ana.SrcFileHandler;
 
 /**
- * A file handler that counts lines of code for source code files.
- * It provides an interface to use the counter for any files and to analyze every line separately.
+ * Provides an general class for replacing strings in source code files with other strings.
+ * This implementation uses regular expressions for the strings and replaces every string one after another.
  * 
  * @author Martin Armbruster
  * @version 1.0
- * @since 1.0
+ * @since 1.1
  */
-public abstract class SrcCounter implements SrcFileHandler
+public abstract class Replace implements SrcFileHandler
 {
 	/**
-	 * Number of total scanned files.
+	 * Stores the mapping between the strings to be replaced and the strings to be inserted.
 	 */
-	private int scannedFiles;
-	/**
-	 * Number of total digits in all scanned files.
-	 */
-	private int digitCounter;
-	/**
-	 * Number of lines of code in all scanned files.
-	 */
-	private int completeLineCounter;
+	private Map<String, String> replaceStrings;
 	
 	/**
-	 * Returns the number of total scanned files by this instance.
+	 * Creates a new instance.
 	 * 
-	 * @return the number of total scanned files.
+	 * @param regexReplaceMapping the mapping between the strings to be replaced and the strings to be inserted.
 	 */
-	public int getScannedFiles()
+	protected Replace(Map<String, String> regexReplaceMapping)
 	{
-		return scannedFiles;
-	}
-	
-	/**
-	 * Returns the number of digits in all scanned files.
-	 * 
-	 * @return the number of digits in all scanned files.
-	 */
-	public int getDigitCount()
-	{
-		return digitCounter;
-	}
-	
-	/**
-	 * Returns the number of total lines of code in all scanned files.
-	 * 
-	 * @return the number of total lines of code in all scanned files.
-	 */
-	public int getCompleteSrcLines()
-	{
-		return completeLineCounter;
-	}
-	
-	/**
-	 * Resets this instance for analyzing another directory.
-	 */
-	@Override
-	public void reset()
-	{
-		scannedFiles = 0;
-		digitCounter = 0;
-		completeLineCounter = 0;
+		replaceStrings = regexReplaceMapping;
 	}
 
 	/**
-	 * Analyzes a source code file.
+	 * Handles a source code file.
 	 * 
-	 * @param f the file.
+	 * @param f the source code file in which all replaces happens.
 	 */
 	@Override
 	public void handleFile(File f)
 	{
-		scannedFiles++;
 		try
 		{
+			// Reads the whole file.
 			BufferedReader reader = new BufferedReader(new FileReader(f));
+			StringBuilder builder = new StringBuilder();
 			String line = reader.readLine();
 			while(line!=null)
 			{ 
-				completeLineCounter++;
-				digitCounter += line.length();
-				handleLine(line);
+				builder.append(line);
+				builder.append("\n");
 				line = reader.readLine();
 			}
 			reader.close();
+			// Replaces all strings.
+			String endResult = builder.toString();
+			for(Map.Entry<String, String> ent : replaceStrings.entrySet())
+			{
+				endResult = endResult.replaceAll(ent.getKey(), ent.getValue());
+			}
+			BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+			writer.write(endResult);
+			writer.close();
 		}
 		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Handles a line of a source code file.
-	 * 
-	 * @param line the line to be handled.
-	 */
-	protected abstract void handleLine(String line);
 }
