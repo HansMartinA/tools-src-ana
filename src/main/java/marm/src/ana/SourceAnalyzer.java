@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Searches for source code files in a given directory and analyzes them with special handlers.
  * 
  * @author Martin Armbruster
- * @version 1.1
+ * @version 1.2
  * @since 1.0
  */
 public class SourceAnalyzer
@@ -63,6 +63,22 @@ public class SourceAnalyzer
 	public void addSrcFileHandler(SrcFileHandler toAdd)
 	{
 		handlers.add(toAdd);
+	}
+	
+	/**
+	 * Adds and registers a MultiExtensionSupportFileHandler instance for supporting specified file extensions. 
+	 * 
+	 * @param handler the FileHandler instance to add.
+	 * @param extensions the extensions that will be supported by handler. 
+	 */
+	public void addSrcFileHandler(MultiExtensionSupportFileHandler handler, String... extensions)
+	{
+		for(String ext : extensions)
+		{
+			MultiExtensionSupportFileHandler h = handler.clone();
+			h.setExtension(ext);
+			handlers.add(h);
+		}
 	}
 	
 	/**
