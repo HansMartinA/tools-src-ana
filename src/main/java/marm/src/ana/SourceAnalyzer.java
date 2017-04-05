@@ -85,7 +85,7 @@ public class SourceAnalyzer
 	 * Adds an regular expression for ignoring directories or files.
 	 * All found directories and files are compared to all registered expressions following ".*"+regex.
 	 * 
-	 * @param regex 
+	 * @param regex the regular expression to be added for ignoring directories or files.
 	 */
 	public void addIgnoreFile(String regex)
 	{

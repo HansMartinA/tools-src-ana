@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>marm</groupId>
   <artifactId>tools-src-ana</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   <dependencies>
   	<dependency>
   		<groupId>org.ahocorasick</groupId>
@@ -49,4 +49,6 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<name>Source Code Analyzer</name>
+	<description>A little tool for searching directories for source code files and analyzing them. </description>
 </project>
