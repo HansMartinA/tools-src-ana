@@ -27,7 +27,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import marm.src.ana.internal.ReplaceJava;
+import marm.src.ana.internal.Replace;
 import marm.src.ana.internal.ReplaceJava2;
 import org.junit.After;
 import org.junit.Before;
@@ -107,7 +107,7 @@ public class ReplaceJavaTest
 		replacements.put("Martin", "");
 		replacements.put("//xxxx", "/**\n\t * This method does something.\n\t */");
 		replacements.put("throw new RuntimeException[(]\\\"Not implemented!\\\"[)];", "print(\"Ah\");");
-		analyzer.addSrcFileHandler(new ReplaceJava(replacements));
+		analyzer.addSrcFileHandler(new Replace(replacements), ".java");
 		long time = System.nanoTime();
 		analyzer.analyze(new File(testDir, "replaceTest1"));
 		System.out.println("Time for the replacing using regular expressions: "+(System.nanoTime()-time));
@@ -153,7 +153,7 @@ public class ReplaceJavaTest
 		replacements.put("eir", "eier");
 		replacements.put(",", "");
 		replacements.put("et", "und");
-		analyzer.addSrcFileHandler(new ReplaceJava(replacements));
+		analyzer.addSrcFileHandler(new Replace(replacements), ".java");
 		long time = System.nanoTime();
 		analyzer.analyze(new File(testDir, "replaceTest3"));
 		System.out.println("Time for the LoremIpsum replacing using regular expressions: "+(System.nanoTime()-time));

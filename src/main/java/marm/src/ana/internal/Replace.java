@@ -27,17 +27,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
-import marm.src.ana.SrcFileHandler;
+import marm.src.ana.MultiExtensionSupportFileHandler;
 
 /**
  * Provides an general class for replacing strings in source code files with other strings.
  * This implementation uses regular expressions for the strings and replaces every string one after another.
  * 
  * @author Martin Armbruster
- * @version 1.0
+ * @version 1.1
  * @since 1.1
  */
-public abstract class Replace implements SrcFileHandler
+public class Replace extends MultiExtensionSupportFileHandler
 {
 	/**
 	 * Stores the mapping between the strings to be replaced and the strings to be inserted.
@@ -49,7 +49,7 @@ public abstract class Replace implements SrcFileHandler
 	 * 
 	 * @param regexReplaceMapping the mapping between the strings to be replaced and the strings to be inserted.
 	 */
-	protected Replace(Map<String, String> regexReplaceMapping)
+	public Replace(Map<String, String> regexReplaceMapping)
 	{
 		replaceStrings = regexReplaceMapping;
 	}
@@ -89,5 +89,16 @@ public abstract class Replace implements SrcFileHandler
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void reset()
+	{
+	}
+	
+	@Override
+	public Replace clone()
+	{
+		return new Replace(replaceStrings);
 	}
 }
