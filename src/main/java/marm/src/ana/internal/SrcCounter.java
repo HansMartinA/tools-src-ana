@@ -24,17 +24,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import marm.src.ana.SrcFileHandler;
+import marm.src.ana.MultiExtensionSupportFileHandler;
 
 /**
  * A file handler that counts lines of code for source code files.
  * It provides an interface to use the counter for any files and to analyze every line separately.
+ * Besides, an instance of this class can be used for counting all lines of code in source code files.
  * 
  * @author Martin Armbruster
- * @version 1.0
- * @since 1.0
+ * @version 1.1
+ * @since 1.1
  */
-public abstract class SrcCounter implements SrcFileHandler
+public class SrcCounter extends MultiExtensionSupportFileHandler
 {
 	/**
 	 * Number of total scanned files.
@@ -120,8 +121,17 @@ public abstract class SrcCounter implements SrcFileHandler
 	
 	/**
 	 * Handles a line of a source code file.
+	 * Subclasses should override this method to perform a separate action on every line, e. g. counting special lines.
 	 * 
 	 * @param line the line to be handled.
 	 */
-	protected abstract void handleLine(String line);
+	protected void handleLine(String line)
+	{
+	}
+	
+	@Override
+	public SrcCounter clone()
+	{
+		return new SrcCounter();
+	}
 }

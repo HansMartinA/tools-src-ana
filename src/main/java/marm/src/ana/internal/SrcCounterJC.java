@@ -23,15 +23,17 @@ package marm.src.ana.internal;
 import java.util.regex.Pattern;
 
 /**
- * A file handler that counts all and actual lines of code in java source files.
+ * A file handler that counts all and actual lines of code in source code files.
  * Actual lines of code follow this definition: these are lines not containing whitespaces, commentaries or braces
- * with or without commentaries only.  
+ * with or without commentaries only.
+ * The following source code files are intended for use with an instance of this class, but it's not limited to: Java
+ * (.java), C (.c), C++ (.cpp), C# (.cs) and Headerfiles (.h). 
  * 
  * @author Martin Armbruster
- * @version 1.1
+ * @version 1.2
  * @since 1.0
  */
-public class SrcCounterJava extends SrcCounter
+public class SrcCounterJC extends SrcCounter
 {
 	/**
 	 * Number of actual lines of code in all scanned files.
@@ -53,7 +55,7 @@ public class SrcCounterJava extends SrcCounter
 	/**
 	 * Creates a new instance.
 	 */
-	public SrcCounterJava()
+	public SrcCounterJC()
 	{
 		whitespaces = Pattern.compile("\\s*[{]?\\s*[}]?\\s*[/][/].*");
 		singleCommentary = Pattern.compile("\\s*[{]?\\s*[}]?\\s*");
@@ -69,17 +71,6 @@ public class SrcCounterJava extends SrcCounter
 	public int getSrcLines()
 	{
 		return lineCounter;
-	}
-
-	/**
-	 * Returns the extension to identify java source code files.
-	 * 
-	 * @return the extension to identify java source code files.
-	 */
-	@Override
-	public String getExtension()
-	{
-		return "java";
 	}
 	
 	@Override
@@ -97,5 +88,11 @@ public class SrcCounterJava extends SrcCounter
 		{
 			lineCounter++;
 		}
+	}
+	
+	@Override
+	public SrcCounterJC clone()
+	{
+		return new SrcCounterJC();
 	}
 }
