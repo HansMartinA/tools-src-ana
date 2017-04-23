@@ -1,38 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>marm</groupId>
-  <artifactId>tools-src-ana</artifactId>
-  <version>1.2</version>
-  <dependencies>
-  	<dependency>
-  		<groupId>org.ahocorasick</groupId>
-  		<artifactId>ahocorasick</artifactId>
-  		<version>0.3.1</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.11</version>
-  		<scope>test</scope>
-  	</dependency>
-  </dependencies>
-	<build>
- 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>marm</groupId>
+	<artifactId>tools-src-ana-total</artifactId>
+	<version>1.2</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.ahocorasick</groupId>
+			<artifactId>ahocorasick</artifactId>
+			<version>0.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<reporting>
 		<plugins>
 			<plugin>
@@ -42,13 +26,25 @@
 				<reportSets>
 					<reportSet>
 						<reports>
-							<report>javadoc</report>
+							<report>aggregate</report>
+							<report>test-aggregate</report>
 						</reports>
 					</reportSet>
 				</reportSets>
+				<configuration>
+					<show>package</show>
+				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>
 	<name>Source Code Analyzer</name>
 	<description>A little tool for searching directories for source code files and analyzing them. </description>
+	<packaging>pom</packaging>
+	<modules>
+		<module>tools-src-ana</module>
+		<module>tools-src-ana-demo</module>
+	</modules>
+	<organization>
+		<name>Martin Armbruster</name>
+	</organization>
 </project>
