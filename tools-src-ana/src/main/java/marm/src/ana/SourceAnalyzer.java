@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Searches for source code files in a given directory and analyzes them with special handlers.
  * 
  * @author Martin Armbruster
- * @version 1.2
+ * @version 1.3
  * @since 1.0
  */
 public class SourceAnalyzer
@@ -36,6 +36,15 @@ public class SourceAnalyzer
 	 * Saves all regular expressions to identify directories and files for ignoring.
 	 */
 	private ArrayList<String> ignoredFiles;
+	/**
+	 * Saves all regular expressions to identify files for exclusive analysis.
+	 */
+	private ArrayList<String> includedFiles;
+	/**
+	 * Indicates the behavior for a file considered to be ignored and included for analysis.
+	 * When it's true, the file is included. When it's false, the file is ignored. 
+	 */
+	private boolean includeBeforeIgnore;
 	/**
 	 * Saves all added handlers.
 	 */
@@ -51,6 +60,8 @@ public class SourceAnalyzer
 	public SourceAnalyzer()
 	{
 		ignoredFiles = new ArrayList<String>();
+		includedFiles = new ArrayList<String>();
+		includeBeforeIgnore = true;
 		handlers = new ArrayList<SrcFileHandler>();
 		reset();
 	}
@@ -93,6 +104,30 @@ public class SourceAnalyzer
 	}
 	
 	/**
+	 * Adds an regular expression for exclusive analysis of matching files.
+	 * All found files are compared to all expressions following ".*"+regex.
+	 * When no expressions are added, all files are included.
+	 * 
+	 * @param regex the regular expression to be added.
+	 */
+	public void addIncludeFile(String regex)
+	{
+		includedFiles.add(regex);
+	}
+	
+	/**
+	 * When a file is considered to be ignored and included for analysis at the same time, the IncludeBeforeIgnore
+	 * policy applies when it's activated. So, the file is included for analysis. Otherwise, such a file is ignored.
+	 * Default is that the IncludeBeforeIgnore policy applies.
+	 * 
+	 * @param s true when the IncludeBeforeIgnore policy should apply. false otherwise.
+	 */
+	public void setIncludeBeforeIgnore(boolean s)
+	{
+		includeBeforeIgnore = s;
+	}
+	
+	/**
 	 * Resets this SourceAnalyzer instance and all registered handlers to the state after instantiation.
 	 * Between two analyzes, it's necessary to call this method.
 	 * Otherwise, the new analysis interferes with the previous result and can cause unexpected behavior and results. 
@@ -124,11 +159,31 @@ public class SourceAnalyzer
 		}
 		loop: for(int i=0; i<files.length; i++)
 		{
-			for(int j=0; j<ignoredFiles.size(); j++)
+			boolean shouldInclude = false;
+			if(includedFiles.size()==0)
 			{
-				if(files[i].getAbsolutePath().matches(".*"+ignoredFiles.get(j)))
+				shouldInclude = true;
+			}
+			for(int j=0; j<includedFiles.size(); j++)
+			{
+				if(files[i].getAbsolutePath().matches(".*"+includedFiles.get(j)))
 				{
-					continue loop;
+					shouldInclude = true;
+					break;
+				}
+			}
+			if(!shouldInclude)
+			{
+				continue loop;
+			}
+			if(shouldInclude&&includeBeforeIgnore)
+			{
+				for(int j=0; j<ignoredFiles.size(); j++)
+				{
+					if(files[i].getAbsolutePath().matches(".*"+ignoredFiles.get(j)))
+					{
+						continue loop;
+					}
 				}
 			}
 			if(files[i].isFile())
