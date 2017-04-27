@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * (.java), C (.c), C++ (.cpp), C# (.cs) and Headerfiles (.h). 
  * 
  * @author Martin Armbruster
- * @version 1.2
+ * @version 1.3
  * @since 1.0
  */
 public class SrcCounterJC extends SrcCounter
@@ -40,15 +40,15 @@ public class SrcCounterJC extends SrcCounter
 	 */
 	private int lineCounter;
 	/**
-	 * Pattern to identify lines containing whitespaces only.
+	 * Pattern to identify lines containing whitespaces or braces only.
 	 */
 	private Pattern whitespaces;
 	/**
-	 * Pattern to identify lines containing braces with or without commentaries only.
+	 * Pattern to identify lines containing braces with or without double-slashed commentaries only.
 	 */
 	private Pattern singleCommentary;
 	/**
-	 * Pattern to identify lines containing commentaries only.
+	 * Pattern to identify lines containing commentaries or braces with commentaries only.
 	 */
 	private Pattern commentaries;
 	
@@ -57,9 +57,9 @@ public class SrcCounterJC extends SrcCounter
 	 */
 	public SrcCounterJC()
 	{
-		whitespaces = Pattern.compile("\\s*[{]?\\s*[}]?\\s*[/][/].*");
-		singleCommentary = Pattern.compile("\\s*[{]?\\s*[}]?\\s*");
-		commentaries = Pattern.compile("\\s*[/]?\\*.*");
+		whitespaces = Pattern.compile("\\s*[{]?\\s*[}]?\\s*");
+		singleCommentary = Pattern.compile("\\s*[{]?\\s*[}]?\\s*[/][/].*");
+		commentaries = Pattern.compile("\\s*[{]?\\s*[}]?\\s*[/]?\\*.*");
 		reset();
 	}
 	
