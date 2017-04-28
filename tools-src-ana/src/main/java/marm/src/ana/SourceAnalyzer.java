@@ -22,6 +22,7 @@ package marm.src.ana;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Searches for source code files in a given directory and analyzes them with special handlers.
@@ -243,5 +244,44 @@ public class SourceAnalyzer
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns registered SrcFileHandler instances looking exactly for a special extension.
+	 * 
+	 * @param extension the extension for which the SrcFileHandler instances are searched.
+	 * @return all registered SrcFileHandler instances looking exactly for the extension. When no instance is found,
+	 * the collection is empty.
+	 */
+	public Collection<SrcFileHandler> getExactFileHandlers(String extension)
+	{
+		ArrayList<SrcFileHandler> result = new ArrayList<SrcFileHandler>();
+		for(SrcFileHandler h : handlers)
+		{
+			if(h.getExtension().equals(extension))
+			{
+				result.add(h);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns registered SrcFileHandler instances looking for extensions ending with a special extension.
+	 * 
+	 * @param extension the special extension.
+	 * @return all registered SrcFileHandler instances looking for extensions ending with extension.
+	 */
+	public Collection<SrcFileHandler> getFileHandlers(String extension)
+	{
+		ArrayList<SrcFileHandler> result = new ArrayList<SrcFileHandler>();
+		for(SrcFileHandler h : handlers)
+		{
+			if(h.getExtension().endsWith(extension))
+			{
+				result.add(h);
+			}
+		}
+		return result;
 	}
 }
